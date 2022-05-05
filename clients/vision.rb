@@ -29,8 +29,8 @@ module Client
         description = descriptions.select { |desc| desc.include? '合計活動時間' }.first
         return if description.nil?
 
-        consumption_calory = description.scan(/(\d+\.\d+)kcal/).first.first
-        activity_time = description.scan(/((\d+)時間)?(\d+)分(\d+)秒/).first.drop(1).compact.join(':')
+        consumption_calory = description.scan(/(\d+\.\d+)kcal/).first&.first
+        activity_time = description.scan(/((\d+)時間)?(\d+)分(\d+)秒/).first&.compact&.join(':')
 
         Activity.new(status_id: tweet.status_id, created_at: tweet.created_at, activity_time:, consumption_calory:)
       end
