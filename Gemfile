@@ -5,6 +5,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '3.1.2'
 
+gem 'fog-aws'
 gem 'google-cloud-vision'
 gem 'twitter'
 
