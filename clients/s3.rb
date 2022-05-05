@@ -10,7 +10,7 @@ module Client
 
     def create(file_name:, body:)
       directory = s3.directories.new(key: bucket_name)
-      directory.files.create(key: "#{PREFIX}#{file_name}", body:)
+      directory.files.create(key: "#{PREFIX}#{file_name}", body: body)
     rescue StandardError => e
       raise UnexpectedError, e.message
     end

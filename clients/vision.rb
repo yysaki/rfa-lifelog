@@ -24,14 +24,14 @@ module Client
         response.responses.first.text_annotations.first.description
       end
 
-      activitify(tweet:, descriptions:)
+      activitify(tweet, descriptions)
     rescue StandardError => e
       raise UnexpectedError, e.message
     end
 
     private
 
-    def activitify(tweet:, descriptions:)
+    def activitify(tweet, descriptions)
       description = descriptions.select { |desc| desc.include? '合計活動時間' }.first
       return nil if description.nil?
 

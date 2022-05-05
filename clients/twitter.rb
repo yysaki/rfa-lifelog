@@ -11,7 +11,7 @@ module Client
     Status = Struct.new(:status_id, :tweeted_at, :photo_urls)
 
     def list(count: 20, user_id: 'yysaki', hash_tag: '#RingFitAdventure')
-      tweets = client.user_timeline(user_id, count:)
+      tweets = client.user_timeline(user_id, count: count)
       statusify(tweets, hash_tag)
     rescue ::Twitter::Error::Unauthorized => e
       raise UnauthorizedError, e.message

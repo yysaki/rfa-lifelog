@@ -1,0 +1,5 @@
+.env
+.rubocop.yml
+.ruby-version
+.vim-lsp-settings
+tmp
