@@ -7,32 +7,13 @@ module Client
   class Vision
     class UnexpectedError < ::StandardError; end
 
-    class Activity
-      ATTRIBUTES = %i[status_id tweeted_at activity_time consumption_calory].freeze
-      attr_reader(*ATTRIBUTES)
-
-      def initialize(status_id:, tweeted_at:, activity_time:, consumption_calory:)
-        @status_id = status_id
-        @tweeted_at = tweeted_at
-        @activity_time = activity_time
-        @consumption_calory = consumption_calory
-      end
-
+    Activity = Struct.new(:status_id, :tweeted_at, :activity_time, :consumption_calory) do
       def to_csv
+        attributes = %i[status_id tweeted_at activity_time consumption_calory].freeze
         CSV.generate do |csv|
-          csv << ATTRIBUTES.map(&:to_s)
-          csv << ATTRIBUTES.map { |attr| send attr }
+          csv << attributes.map(&:to_s)
+          csv << attributes.map { |attr| send attr }
         end
-      end
-
-      def self.build(tweet:, descriptions:)
-        description = descriptions.select { |desc| desc.include? '合計活動時間' }.first
-        return if description.nil?
-
-        consumption_calory = description.scan(/(\d+\.\d+)kcal/).first&.first
-        activity_time = description.scan(/((\d+)時間)?(\d+)分(\d+)秒/).first&.compact&.join(':')
-
-        Activity.new(status_id: tweet.status_id, tweeted_at: tweet.tweeted_at, activity_time:, consumption_calory:)
       end
     end
 
@@ -43,9 +24,21 @@ module Client
         response.responses.first.text_annotations.first.description
       end
 
-      Activity.build(tweet:, descriptions:)
+      activitify(tweet:, descriptions:)
     rescue StandardError => e
       raise UnexpectedError, e.message
+    end
+
+    private
+
+    def activitify(tweet:, descriptions:)
+      description = descriptions.select { |desc| desc.include? '合計活動時間' }.first
+      return nil if description.nil?
+
+      consumption_calory = description.scan(/(\d+\.\d+)kcal/).first&.first
+      activity_time = description.scan(/((\d+)時間)?(\d+)分(\d+)秒/).first&.compact&.join(':')
+
+      Activity.new(tweet.status_id, tweet.tweeted_at, activity_time, consumption_calory)
     end
   end
 end

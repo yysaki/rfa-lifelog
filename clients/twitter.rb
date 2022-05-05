@@ -8,34 +8,11 @@ module Client
     class UnauthorizedError < Error; end
     class UnexpectedError < Error; end
 
-    class Tweet
-      attr_reader :status_id, :tweeted_at, :photo_urls
-
-      def initialize(status_id:, tweeted_at:, photo_urls:)
-        @status_id = status_id
-        @tweeted_at = tweeted_at
-        @photo_urls = photo_urls
-      end
-
-      def self.build(tweet)
-        Tweet.new(
-          status_id: tweet.id,
-          tweeted_at: tweet.created_at.iso8601,
-          photo_urls: photo_urls_from(tweet)
-        )
-      end
-
-      def self.photo_urls_from(tweet)
-        tweet.media
-             .select { |m| m.is_a? ::Twitter::Media::Photo }
-             .map { |m| m.media_uri_https.to_s }
-      end
-    end
+    Status = Struct.new(:status_id, :tweeted_at, :photo_urls)
 
     def list(count: 20, user_id: 'yysaki', hash_tag: '#RingFitAdventure')
-      client.user_timeline(user_id, count:)
-            .select { |tweet| tweet.text.include? hash_tag }
-            .map { |tweet| Tweet.build(tweet) }
+      tweets = client.user_timeline(user_id, count:)
+      statusify(tweets, hash_tag)
     rescue ::Twitter::Error::Unauthorized => e
       raise UnauthorizedError, e.message
     rescue StandardError => e
@@ -43,6 +20,18 @@ module Client
     end
 
     private
+
+    def statusify(tweets, hash_tag)
+      tweets
+        .select { |t| t.text.include? hash_tag }
+        .map { |t| Status.new(t.id, t.created_at.iso8601, photo_urls_from(t)) }
+    end
+
+    def photo_urls_from(tweet)
+      tweet.media
+           .select { |m| m.is_a? ::Twitter::Media::Photo }
+           .map { |m| m.media_uri_https.to_s }
+    end
 
     def client
       @client ||= ::Twitter::REST::Client.new(
