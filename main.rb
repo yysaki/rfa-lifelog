@@ -21,7 +21,7 @@ def active_activities(status_ids:, count:)
   vision = Client::Vision.new
 
   twitter.list(count:)
-         .reject { |tweet| status_ids.include? tweet.status_id }
+         .reject { |tweet| status_ids.include? tweet.status_id.to_s }
          .map { |tweet| vision.show(tweet) }
          .compact
 end
