@@ -9,18 +9,18 @@ module Client
     class UnexpectedError < Error; end
 
     class Tweet
-      attr_reader :status_id, :created_at, :photo_urls
+      attr_reader :status_id, :tweeted_at, :photo_urls
 
-      def initialize(status_id:, created_at:, photo_urls:)
+      def initialize(status_id:, tweeted_at:, photo_urls:)
         @status_id = status_id
-        @created_at = created_at
+        @tweeted_at = tweeted_at
         @photo_urls = photo_urls
       end
 
       def self.build(tweet)
         Tweet.new(
           status_id: tweet.id,
-          created_at: tweet.created_at.iso8601,
+          tweeted_at: tweet.created_at.iso8601,
           photo_urls: photo_urls_from(tweet)
         )
       end
