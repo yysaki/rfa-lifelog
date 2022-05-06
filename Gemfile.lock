@@ -147,6 +147,7 @@ GEM
       parser (>= 3.1.1.0)
     ruby-progressbar (1.11.0)
     ruby2_keywords (0.0.5)
+    settings_cabinet (0.1.0)
     signet (0.16.1)
       addressable (~> 2.8)
       faraday (>= 0.17.5, < 3.0)
@@ -178,6 +179,7 @@ DEPENDENCIES
   fog-aws
   google-cloud-vision
   rubocop
+  settings_cabinet
   twitter
 
 RUBY VERSION

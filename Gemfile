@@ -7,6 +7,7 @@ ruby '2.7.6'
 
 gem 'fog-aws'
 gem 'google-cloud-vision'
+gem 'settings_cabinet'
 gem 'twitter'
 
 group :development do

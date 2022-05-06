@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'fog/aws'
+require_relative '../config'
 
 module Client
   class S3
@@ -30,8 +31,8 @@ module Client
       @s3 ||= Fog::Storage.new(
         provider: 'AWS',
         region: 'ap-northeast-1',
-        aws_access_key_id: ENV.fetch('AWS_ACCESS_KEY_ID'),
-        aws_secret_access_key: ENV.fetch('AWS_SECRET_ACCESS_KEY')
+        aws_access_key_id: Settings.clients.s3.aws_access_key_id,
+        aws_secret_access_key: Settings.clients.s3.aws_secret_access_key
       )
     end
 

@@ -2,6 +2,7 @@
 
 require 'csv'
 require 'google/cloud/vision'
+require_relative '../config'
 
 module Client
   class Vision
@@ -15,6 +16,10 @@ module Client
           csv << attributes.map { |attr| send attr }
         end
       end
+    end
+
+    def initialize
+      create_credentials_file unless File.exist?(Settings.clients.vision.google_application_credentials_path)
     end
 
     def show(tweet)
@@ -39,6 +44,11 @@ module Client
       activity_time = description.scan(/((\d+)時間)?(\d+)分(\d+)秒/).first&.compact&.join(':')
 
       Activity.new(tweet.status_id, tweet.tweeted_at, activity_time, consumption_calory)
+    end
+
+    def create_credentials_file
+      File.write(Settings.clients.vision.google_application_credentials_path,
+                 Settings.clients.vision.google_application_credentials_json)
     end
   end
 end

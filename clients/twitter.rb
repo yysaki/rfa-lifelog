@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'twitter'
+require_relative '../config'
 
 module Client
   class Twitter
@@ -35,9 +36,9 @@ module Client
 
     def client
       @client ||= ::Twitter::REST::Client.new(
-        consumer_key: ENV.fetch('TWITTER_CONSUMER_KEY', nil),
-        consumer_secret: ENV.fetch('TWITTER_CONSUMER_SECRET', nil),
-        bearer_token: ENV.fetch('TWITTER_BEARER_TOKEN', nil)
+        consumer_key: Settings.clients.twitter.consumer_key,
+        consumer_secret: Settings.clients.twitter.consumer_secret,
+        bearer_token: Settings.clients.twitter.bearer_token
       )
     end
   end
