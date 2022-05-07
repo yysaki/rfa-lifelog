@@ -37,7 +37,7 @@ module Client
     end
 
     def bucket_name
-      @bucket_name ||= ENV.fetch('AWS_S3_BUCKET')
+      @bucket_name ||= Settings.clients.s3.aws_bucket_name
     end
   end
 end

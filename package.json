@@ -1,0 +1,14 @@
+{
+  "name": "rfa-lifelog",
+  "version": "0.1.0",
+  "description": "",
+  "scripts": {
+    "deploy": "sls deploy",
+    "invoke": "sls invoke -f rfa-lifelog"
+  },
+  "author": "yysaki",
+  "license": "MIT",
+  "dependencies": {
+    "serverless": "^3.16.0"
+  }
+}
