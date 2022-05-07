@@ -8,7 +8,7 @@ clients:
     consumer_secret: <%= ENV.fetch('TWITTER_CONSUMER_SECRET', nil) %>
     bearer_token: <%= ENV.fetch('TWITTER_BEARER_TOKEN', nil) %>
   vision:
-    google_application_credentials_path: '/tmp//google_application_credentials.json'
+    google_application_credentials_path: <%= ENV.fetch('GOOGLE_APPLICATION_CREDENTIALS', nil) %>
     google_application_credentials_json: <%= ENV.fetch('GOOGLE_APPLICATION_CREDENTIALS_JSON', nil) %>
 usecase:
   count: <%= ENV.fetch('USECASE_COUNT', 20) %>
