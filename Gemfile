@@ -11,5 +11,6 @@ gem 'settings_cabinet'
 gem 'twitter'
 
 group :development do
+  gem 'rspec'
   gem 'rubocop', require: false
 end
