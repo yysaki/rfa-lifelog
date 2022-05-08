@@ -17,6 +17,12 @@ jobs:
           bundler-cache: true
       - name: rspec
         run: bundle exec rspec
+      - uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/coverage.xml
+          flags: unittests
+          fail_ci_if_error: true
   rubocop:
     runs-on: ubuntu-latest
     steps:

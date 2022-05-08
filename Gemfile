@@ -13,4 +13,6 @@ gem 'twitter'
 group :development do
   gem 'rspec'
   gem 'rubocop', require: false
+  gem 'simplecov', require: false
+  gem 'simplecov-cobertura'
 end
