@@ -17,12 +17,11 @@ jobs:
           bundler-cache: true
       - name: rspec
         run: bundle exec rspec
-      - uses: codecov/codecov-action@v2
+      - uses: paambaati/codeclimate-action@v3.0.0
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./coverage/coverage.xml
-          flags: unittests
-          fail_ci_if_error: true
+          coverageLocations: ${{ github.workspace }}/coverage/coverage.xml:simplecov
   rubocop:
     runs-on: ubuntu-latest
     steps:
@@ -31,5 +30,5 @@ jobs:
         with:
           ruby-version: '2.7.6'
           bundler-cache: true
-      - name: rspec
+      - name: rubocop
         run: bundle exec rubocop

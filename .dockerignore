@@ -1,9 +1,9 @@
-.coverage/
 .env
 .rubocop.yml
 .ruby-version
 .serverless/
 .vim-lsp-settings
+coverage/
 node_modules/
 package-lock.json
 package.json
