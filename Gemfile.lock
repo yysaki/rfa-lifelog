@@ -203,6 +203,7 @@ DEPENDENCIES
   rubocop
   settings_cabinet
   simplecov
+  simplecov_json_formatter
   twitter
 
 RUBY VERSION

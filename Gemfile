@@ -14,4 +14,5 @@ group :development do
   gem 'rspec'
   gem 'rubocop', require: false
   gem 'simplecov', require: false
+  gem 'simplecov_json_formatter', require: false
 end
