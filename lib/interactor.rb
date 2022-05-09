@@ -9,8 +9,7 @@ class Interactor
   end
 
   def call
-    s3 = Client::S3.new
-    status_ids = s3.list.map { |file_name| file_name.gsub('.csv', '') }
+    status_ids = Clients::S3.list.map { |file_name| file_name.gsub('.csv', '') }
 
     activities = active_activities(status_ids)
     activities.each do |a|
@@ -23,12 +22,8 @@ class Interactor
   private
 
   def active_activities(status_ids)
-    twitter = Client::Twitter.new
-    vision = Client::Vision.new
-
-    tweets = twitter.list(count: Settings.usecase.count)
+    tweets = Clients::Twitter.list(count: Settings.usecase.count)
     tweets = tweets.reject { |tweet| status_ids.include? tweet.status_id.to_s } unless Settings.usecase.force
-    tweets.map { |tweet| vision.show(tweet) }
-          .compact
+    tweets.map { |tweet| Clients::Vision.new.show(tweet) }.compact
   end
 end

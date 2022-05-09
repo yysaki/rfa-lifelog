@@ -4,7 +4,7 @@ require 'csv'
 require 'google/cloud/vision'
 require_relative '../config'
 
-module Client
+module Clients
   class Vision
     class UnexpectedError < ::StandardError; end
 
@@ -16,6 +16,10 @@ module Client
           csv << attributes.map { |attr| send attr }
         end
       end
+    end
+
+    def self.show(tweet)
+      new.show(tweet)
     end
 
     def initialize

@@ -3,7 +3,7 @@
 require 'twitter'
 require_relative '../config'
 
-module Client
+module Clients
   class Twitter
     class Error < ::StandardError; end
     class UnauthorizedError < Error; end
@@ -15,6 +15,10 @@ module Client
     USER_ID = 'yysaki'
 
     def self.list(count:)
+      new.list(count: count)
+    end
+
+    def list(count:)
       tweets = client.user_timeline(USER_ID, count: count)
       statusify(tweets)
     rescue ::Twitter::Error::Unauthorized => e

@@ -3,11 +3,19 @@
 require 'fog/aws'
 require_relative '../config'
 
-module Client
+module Clients
   class S3
     class UnexpectedError < ::StandardError; end
 
     PREFIX = 'rfa/'
+
+    def self.create(file_name:, body:)
+      new.create(file_name: file_name, body: body)
+    end
+
+    def self.list
+      new.list
+    end
 
     def create(file_name:, body:)
       directory = s3.directories.new(key: bucket_name)
