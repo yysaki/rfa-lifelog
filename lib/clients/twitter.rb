@@ -11,9 +11,12 @@ module Client
 
     Status = Struct.new(:status_id, :tweeted_at, :photo_urls)
 
-    def list(count: 20, user_id: 'yysaki', hash_tag: '#RingFitAdventure')
-      tweets = client.user_timeline(user_id, count: count)
-      statusify(tweets, hash_tag)
+    HASH_TAG = '#RingFitAdventure'
+    USER_ID = 'yysaki'
+
+    def self.list(count:)
+      tweets = client.user_timeline(USER_ID, count: count)
+      statusify(tweets)
     rescue ::Twitter::Error::Unauthorized => e
       raise UnauthorizedError, e.message
     rescue StandardError => e
@@ -22,9 +25,9 @@ module Client
 
     private
 
-    def statusify(tweets, hash_tag)
+    def statusify(tweets)
       tweets
-        .select { |t| t.text.include? hash_tag }
+        .select { |t| t.text.include? HASH_TAG }
         .map { |t| Status.new(t.id, t.created_at.iso8601, photo_urls_from(t)) }
     end
 
