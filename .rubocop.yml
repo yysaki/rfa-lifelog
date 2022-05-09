@@ -1,5 +1,9 @@
 AllCops:
   NewCops: enable
 
+Metrics/BlockLength:
+  IgnoredMethods: 
+    - describe
+
 Style/Documentation:
   Enabled: false
