@@ -5,10 +5,10 @@ require_relative '../../lib/clients/twitter'
 
 RSpec.describe Clients::Twitter do
   describe '.list' do
-    subject { described_class.list(count: 20) }
+    subject(:list) { described_class.list(count: 20) }
 
     before do
-      client = double('client')
+      client = instance_double(Twitter::REST::Client)
       allow(Twitter::REST::Client).to receive(:new).and_return(client)
       allow(client).to receive(:user_timeline).and_return([tweet])
     end
@@ -17,7 +17,7 @@ RSpec.describe Clients::Twitter do
       let(:tweet) { Twitter::Tweet.new(id: 12_345_678_902, text: 'つぶやき') }
 
       it 'returns empty array' do
-        expect(subject).to be_empty
+        expect(list).to be_empty
       end
     end
 
@@ -38,15 +38,15 @@ RSpec.describe Clients::Twitter do
       end
 
       it 'returns one element in array' do
-        expect(subject).to be_one
+        expect(list).to be_one
       end
 
       it 'returns Status instance' do
-        expect(subject.first).to be_a described_class::Status
+        expect(list.first).to be_a described_class::Status
       end
 
       it 'returns expeted value' do
-        expect(subject.first.to_h).to eq expected
+        expect(list.first.to_h).to eq expected
       end
     end
   end

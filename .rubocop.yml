@@ -1,9 +1,12 @@
+require:
+  - rubocop-rspec
+
 AllCops:
   NewCops: enable
 
 Metrics/BlockLength:
   IgnoredMethods: 
-    - describe
+  - describe
 
 Style/Documentation:
   Enabled: false
