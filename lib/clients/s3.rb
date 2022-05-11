@@ -5,6 +5,8 @@ require_relative '../config'
 
 module Clients
   class S3
+    private_class_method :new
+
     PREFIX = 'rfa/'
 
     def self.create(file_name:, body:)

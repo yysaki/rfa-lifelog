@@ -6,6 +6,8 @@ require_relative '../config'
 
 module Clients
   class Vision
+    private_class_method :new
+
     Activity = Struct.new(:status_id, :tweeted_at, :activity_time, :consumption_calory) do
       def to_csv
         attributes = %i[status_id tweeted_at activity_time consumption_calory].freeze

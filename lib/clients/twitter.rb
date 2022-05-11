@@ -5,6 +5,8 @@ require_relative '../config'
 
 module Clients
   class Twitter
+    private_class_method :new
+
     Status = Struct.new(:status_id, :tweeted_at, :photo_urls)
 
     HASH_TAG = '#RingFitAdventure'

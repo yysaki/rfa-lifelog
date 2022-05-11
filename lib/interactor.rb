@@ -4,6 +4,8 @@ require_relative 'config'
 require_relative 'clients'
 
 class Interactor
+  private_class_method :new
+
   def self.call
     new.call
   end
