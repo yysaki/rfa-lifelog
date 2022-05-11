@@ -5,10 +5,6 @@ require_relative '../config'
 
 module Clients
   class Twitter
-    class Error < ::StandardError; end
-    class UnauthorizedError < Error; end
-    class UnexpectedError < Error; end
-
     Status = Struct.new(:status_id, :tweeted_at, :photo_urls)
 
     HASH_TAG = '#RingFitAdventure'
@@ -21,10 +17,6 @@ module Clients
     def list(count:)
       tweets = client.user_timeline(USER_ID, count: count)
       statusify(tweets)
-    rescue ::Twitter::Error::Unauthorized => e
-      raise UnauthorizedError, e.message
-    rescue StandardError => e
-      raise UnexpectedError, e.message
     end
 
     private

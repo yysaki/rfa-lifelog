@@ -6,8 +6,6 @@ require_relative '../config'
 
 module Clients
   class Vision
-    class UnexpectedError < ::StandardError; end
-
     Activity = Struct.new(:status_id, :tweeted_at, :activity_time, :consumption_calory) do
       def to_csv
         attributes = %i[status_id tweeted_at activity_time consumption_calory].freeze
@@ -34,8 +32,6 @@ module Clients
       end
 
       activitify(tweet, descriptions)
-    rescue StandardError => e
-      raise UnexpectedError, e.message
     end
 
     private
