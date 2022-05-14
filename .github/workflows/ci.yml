@@ -19,7 +19,7 @@ jobs:
         run: bundle exec rspec
       - uses: paambaati/codeclimate-action@v3.0.0
         env:
-          CC_TEST_REPORTER_ID: f3cb6941474cc605805633b7de75dfe454317a6a736d86f4d92c3c0f9355c3e6
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
   rubocop:
     runs-on: ubuntu-latest
     steps:
