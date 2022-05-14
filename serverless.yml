@@ -19,7 +19,7 @@ functions:
         - app.handler
     timeout: 900
     events:
-      - schedule: rate(2 hours)
+      - schedule: cron(0/30 * * * ? *)
     environment:
       TWITTER_CONSUMER_KEY: ${ssm:/RFA_LIFELOG/TWITTER_CONSUMER_KEY}
       TWITTER_CONSUMER_SECRET: ${ssm:/RFA_LIFELOG/TWITTER_CONSUMER_SECRET}
