@@ -8,9 +8,9 @@ module Clients
   class Vision
     private_class_method :new
 
-    Activity = Struct.new(:status_id, :tweeted_at, :activity_time, :consumption_calory) do
+    Activity = Struct.new(:status_id, :tweeted_at, :activity_time, :consumption_calory, :running_distance) do
       def to_csv
-        attributes = %i[status_id tweeted_at activity_time consumption_calory].freeze
+        attributes = %i[status_id tweeted_at activity_time consumption_calory running_distance].freeze
         CSV.generate do |csv|
           csv << attributes.map(&:to_s)
           csv << attributes.map { |attr| send attr }
@@ -28,24 +28,25 @@ module Clients
 
     def show(tweet)
       image_annotator = Google::Cloud::Vision.image_annotator
+
       descriptions = tweet.photo_urls.map do |url|
         response = image_annotator.text_detection(image: url)
         response.responses.first.text_annotations.first.description
       end
+      description = descriptions.select { |desc| desc.include? '合計活動時間' }.first
+      return nil if description.nil?
 
-      activitify(tweet, descriptions)
+      activitify(tweet, description)
     end
 
     private
 
-    def activitify(tweet, descriptions)
-      description = descriptions.select { |desc| desc.include? '合計活動時間' }.first
-      return nil if description.nil?
-
+    def activitify(tweet, description)
       consumption_calory = description.scan(/(\d+\.\d+)kcal/).first&.first
       activity_time = description.scan(/((\d+)時間)?(\d+)分(\d+)秒/).first&.compact&.join(':')
+      running_distance = description.scan(/(\d+\.\d+)km/).first&.first
 
-      Activity.new(tweet.status_id, tweet.tweeted_at, activity_time, consumption_calory)
+      Activity.new(tweet.status_id, tweet.tweeted_at, activity_time, consumption_calory, running_distance)
     end
 
     def create_credentials_file

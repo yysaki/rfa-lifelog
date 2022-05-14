@@ -33,10 +33,10 @@ class Interactor
 
   def text(activity)
     <<~TEXT
-      ・URL: https://twitter.com/#{Clients::Twitter::USER_ID}/status/#{activity.status_id}
+      ・url: https://twitter.com/#{Clients::Twitter::USER_ID}/status/#{activity.status_id}
       ・合計活動時間: #{activity.activity_time}
-      ・合計消費カロリー: #{activity.consumption_calory}
-      ・合計走行距離:
+      ・合計消費カロリー: #{activity.consumption_calory}kcal
+      ・合計走行距離: #{activity.running_distance}km
     TEXT
   end
 end
