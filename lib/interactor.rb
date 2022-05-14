@@ -15,7 +15,7 @@ class Interactor
 
     activities = active_activities(status_ids)
     activities.each do |a|
-      s3.create(file_name: "#{a.status_id}.csv", body: a.to_csv)
+      Clients::S3.create(file_name: "#{a.status_id}.csv", body: a.to_csv)
     end
 
     activities.to_s
@@ -26,6 +26,6 @@ class Interactor
   def active_activities(status_ids)
     tweets = Clients::Twitter.list(count: Settings.usecase.count)
     tweets = tweets.reject { |tweet| status_ids.include? tweet.status_id.to_s } unless Settings.usecase.force
-    tweets.map { |tweet| Clients::Vision.new.show(tweet) }.compact
+    tweets.map { |tweet| Clients::Vision.show(tweet) }.compact
   end
 end
