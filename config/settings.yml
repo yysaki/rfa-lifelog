@@ -3,6 +3,9 @@ clients:
     aws_access_key_id: <%= ENV.fetch('AWS_S3_ACCESS_KEY_ID', nil) %>
     aws_secret_access_key: <%= ENV.fetch('AWS_S3_SECRET_ACCESS_KEY', nil) %>
     aws_bucket_name: <%= ENV.fetch('AWS_S3_BUCKET', nil) %>
+  slack:
+    webhook_url: <%= ENV.fetch('SLACK_WEBHOOK_URL', nil) %>
+    channel: <%= ENV.fetch('SLACK_CHANNEL', '#bot') %>
   twitter:
     consumer_key: <%= ENV.fetch('TWITTER_CONSUMER_KEY', nil) %>
     consumer_secret: <%= ENV.fetch('TWITTER_CONSUMER_SECRET', nil) %>

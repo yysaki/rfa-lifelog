@@ -177,6 +177,7 @@ GEM
       simplecov_json_formatter (~> 0.1)
     simplecov-html (0.12.3)
     simplecov_json_formatter (0.1.4)
+    slack-notifier (2.4.0)
     thread_safe (0.3.6)
     twitter (7.0.0)
       addressable (~> 2.3)
@@ -207,6 +208,7 @@ DEPENDENCIES
   settings_cabinet
   simplecov
   simplecov_json_formatter
+  slack-notifier
   twitter
 
 RUBY VERSION
