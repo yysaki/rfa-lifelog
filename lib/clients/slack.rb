@@ -6,14 +6,14 @@ module Clients
   class Slack
     private_class_method :new
 
-    USERNAME = 'rfa-lifelog'
+    USERNAME = 'リングフィットアドベンチャー通知'
 
     def self.notify(text)
-      new.notify(title: 'RFA本日の運動結果', color: 'good', text: text)
+      new.notify(title: '本日の運動結果', color: 'good', text: text)
     end
 
     def self.warn(text)
-      new.notify(title: 'RFA運動結果の取得に失敗しました', color: 'warning', text: text)
+      new.notify(title: '運動結果の取得に失敗しました', color: 'warning', text: text)
     end
 
     def notify(title:, color:, text:)
