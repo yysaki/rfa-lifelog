@@ -1,8 +1,8 @@
 clients:
   s3:
-    aws_access_key_id: <%= ENV.fetch('AWS_S3_ACCESS_KEY_ID', nil) %>
-    aws_secret_access_key: <%= ENV.fetch('AWS_S3_SECRET_ACCESS_KEY', nil) %>
-    aws_bucket_name: <%= ENV.fetch('AWS_S3_BUCKET', nil) %>
+    aws_access_key_id: <%= ENV.fetch('AWS_S3_ACCESS_KEY_ID', 'key') %>
+    aws_secret_access_key: <%= ENV.fetch('AWS_S3_SECRET_ACCESS_KEY', 'secret') %>
+    aws_bucket_name: <%= ENV.fetch('AWS_S3_BUCKET', 'bucket') %>
   slack:
     webhook_url: <%= ENV.fetch('SLACK_WEBHOOK_URL', nil) %>
     channel: <%= ENV.fetch('SLACK_CHANNEL', '#bot') %>
