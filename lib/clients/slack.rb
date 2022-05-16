@@ -8,18 +8,14 @@ module Clients
     private_class_method :new
 
     class Client
-      CONFIG = {
-        channel: ::Settings.clients.slack.channel,
-        username: 'リングフィットアドベンチャー通知'
-      }.freeze
-
       def post(attachments:)
         notifier.post(attachments: attachments)
       end
 
       def notifier
         @notifier ||= ::Slack::Notifier.new Settings.clients.slack.webhook_url do
-          defaults CONFIG
+          defaults channel: ::Settings.clients.slack.channel,
+                   username: 'リングフィットアドベンチャー通知'
         end
       end
     end
