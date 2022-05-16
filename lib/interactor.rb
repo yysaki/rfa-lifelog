@@ -16,7 +16,6 @@ class Interactor
     active_activities(status_ids).each do |a|
       Clients::S3.create(file_name: "#{a.status_id}.csv", body: a.to_csv)
       Clients::Slack.notify(text(a))
-      puts text(a)
     end
   rescue StandardError => e
     Clients::Slack.warn(e.message)
