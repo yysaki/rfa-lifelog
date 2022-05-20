@@ -11,23 +11,23 @@ class Interactor
   end
 
   def call
-    status_ids = Clients::S3.list.map { |file_name| file_name.gsub('.csv', '') }
+    status_ids = s3.list.map { |file_name| file_name.gsub('.csv', '') }
 
     active_activities(status_ids).each do |a|
-      Clients::S3.create(file_name: "#{a.status_id}.csv", body: a.to_csv)
-      Clients::Slack.notify(text(a))
+      s3.create(file_name: "#{a.status_id}.csv", body: a.to_csv)
+      slack.notify(text(a))
     end
   rescue StandardError => e
-    Clients::Slack.warn(e.message)
+    slack.warn(e.message)
     raise
   end
 
   private
 
   def active_activities(status_ids)
-    tweets = Clients::Twitter.list(count: Settings.usecase.count)
+    tweets = twitter.list(count: Settings.usecase.count)
     tweets = tweets.reject { |tweet| status_ids.include? tweet.status_id.to_s } unless Settings.usecase.force
-    tweets.map { |tweet| Clients::Vision.show(tweet) }.compact
+    tweets.map { |tweet| vision.show(tweet) }.compact
   end
 
   def text(activity)
@@ -37,5 +37,21 @@ class Interactor
       ・合計消費カロリー: #{activity.consumption_calory}kcal
       ・合計走行距離: #{activity.running_distance}km
     TEXT
+  end
+
+  def s3
+    Clients::S3
+  end
+
+  def slack
+    Clients::Slack
+  end
+
+  def vision
+    Clients::Vision
+  end
+
+  def twitter
+    Clients::Twitter
   end
 end
