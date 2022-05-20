@@ -11,11 +11,9 @@ class Interactor
   end
 
   def call
-    status_ids = s3.list.map { |file_name| file_name.gsub('.csv', '') }
-
-    active_activities(status_ids).each do |a|
-      s3.create(file_name: "#{a.status_id}.csv", body: a.to_csv)
-      slack.notify(text(a))
+    activities.each do |activity|
+      s3.create(file_name: "#{activity.status_id}.csv", body: activity.to_csv)
+      slack.notify(activity.to_s)
     end
   rescue StandardError => e
     slack.warn(e.message)
@@ -24,19 +22,17 @@ class Interactor
 
   private
 
-  def active_activities(status_ids)
-    tweets = twitter.list(count: Settings.usecase.count)
-    tweets = tweets.reject { |tweet| status_ids.include? tweet.status_id.to_s } unless Settings.usecase.force
-    tweets.map { |tweet| vision.show(tweet) }.compact
+  def activities
+    ignored_ids = status_ids
+
+    twitter.list(count: Settings.usecase.count)
+           .select { |tweet| Settings.usecase.force || !ignored_ids.include?(tweet.status_id.to_s) }
+           .map { |tweet| vision.show(tweet) }
+           .compact
   end
 
-  def text(activity)
-    <<~TEXT
-      ・url: https://twitter.com/#{Clients::Twitter::USER_ID}/status/#{activity.status_id}
-      ・合計活動時間: #{activity.activity_time}
-      ・合計消費カロリー: #{activity.consumption_calory}kcal
-      ・合計走行距離: #{activity.running_distance}km
-    TEXT
+  def status_ids
+    s3.list.map { |file_name| file_name.gsub('.csv', '') }
   end
 
   def s3

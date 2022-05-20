@@ -16,6 +16,15 @@ module Clients
           csv << ACTIVITY_ATTRIBUTES.map { |attr| send attr }
         end
       end
+
+      def to_s
+        <<~TEXT
+          ・url: https://twitter.com/#{Clients::Twitter::USER_ID}/status/#{status_id}
+          ・合計活動時間: #{activity_time}
+          ・合計消費カロリー: #{consumption_calory}kcal
+          ・合計走行距離: #{running_distance}km
+        TEXT
+      end
     end
 
     def self.show(status)
