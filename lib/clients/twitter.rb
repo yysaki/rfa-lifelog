@@ -17,7 +17,7 @@ module Clients
     end
 
     def list(count:)
-      tweets = client.user_timeline(USER_ID, count: count)
+      tweets = client.user_timeline(count: count)
       statusify(tweets)
     end
 
@@ -36,11 +36,23 @@ module Clients
     end
 
     def client
-      @client ||= ::Twitter::REST::Client.new(
-        consumer_key: Settings.clients.twitter.consumer_key,
-        consumer_secret: Settings.clients.twitter.consumer_secret,
-        bearer_token: Settings.clients.twitter.bearer_token
-      )
+      @client ||= Client.new
+    end
+
+    class Client
+      def user_timeline(count:)
+        client.user_timeline(USER_ID, count: count)
+      end
+
+      private
+
+      def client
+        @client ||= ::Twitter::REST::Client.new(
+          consumer_key: Settings.clients.twitter.consumer_key,
+          consumer_secret: Settings.clients.twitter.consumer_secret,
+          bearer_token: Settings.clients.twitter.bearer_token
+        )
+      end
     end
   end
 end
