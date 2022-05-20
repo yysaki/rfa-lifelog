@@ -7,19 +7,6 @@ module Clients
   class Slack
     private_class_method :new
 
-    class Client
-      def post(attachments:)
-        notifier.post(attachments: attachments)
-      end
-
-      def notifier
-        @notifier ||= ::Slack::Notifier.new Settings.clients.slack.webhook_url do
-          defaults channel: ::Settings.clients.slack.channel,
-                   username: 'リングフィットアドベンチャー通知'
-        end
-      end
-    end
-
     def self.notify(text)
       new.notify(title: '本日の運動結果', color: 'good', text: text)
     end
@@ -37,6 +24,19 @@ module Clients
 
     def client
       @client ||= Client.new
+    end
+
+    class Client
+      def post(attachments:)
+        notifier.post(attachments: attachments)
+      end
+
+      def notifier
+        @notifier ||= ::Slack::Notifier.new Settings.clients.slack.webhook_url do
+          defaults channel: ::Settings.clients.slack.channel,
+                   username: 'リングフィットアドベンチャー通知'
+        end
+      end
     end
   end
 end
