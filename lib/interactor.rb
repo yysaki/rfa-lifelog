@@ -10,6 +10,15 @@ class Interactor
     new.call
   end
 
+  attr_reader :s3, :slack, :vision, :twitter
+
+  def initialize
+    @s3 = Clients::S3
+    @slack = Clients::Slack
+    @vision = Clients::Vision
+    @twitter = Clients::Twitter
+  end
+
   def call
     activities.each do |activity|
       s3.create(file_name: "#{activity.status_id}.csv", body: activity.to_csv)
@@ -33,21 +42,5 @@ class Interactor
 
   def status_ids
     s3.list.map { |file_name| file_name.gsub('.csv', '') }
-  end
-
-  def s3
-    Clients::S3
-  end
-
-  def slack
-    Clients::Slack
-  end
-
-  def vision
-    Clients::Vision
-  end
-
-  def twitter
-    Clients::Twitter
   end
 end
